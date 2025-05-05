@@ -1,0 +1,37 @@
+# Project: LMS
+# Makefile created by Dev-C++ 5.11
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = book_operations.o main.o menu.o user_operations.o
+LINKOBJ  = book_operations.o main.o menu.o user_operations.o
+LIBS     = -L"D:/VS code/Dev-Cpp/MinGW64/lib" -L"D:/VS code/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"D:/VS code/Dev-Cpp/MinGW64/include" -I"D:/VS code/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/VS code/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
+CXXINCS  = -I"D:/VS code/Dev-Cpp/MinGW64/include" -I"D:/VS code/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/VS code/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/VS code/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
+BIN      = LMS.exe
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+RM       = rm.exe -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+book_operations.o: book_operations.c
+	$(CC) -c book_operations.c -o book_operations.o $(CFLAGS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+menu.o: menu.c
+	$(CC) -c menu.c -o menu.o $(CFLAGS)
+
+user_operations.o: user_operations.c
+	$(CC) -c user_operations.c -o user_operations.o $(CFLAGS)
