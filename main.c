@@ -68,9 +68,9 @@ int main()
         printf("请您选择(1-4):");
         choice1 = getch();
         while (choice1 != '1' && choice1 != '2' && choice1 != '3' && choice1 != '4')
-            choice1 = getch(); /*如果输入的选项不在1-4之间，则重新输入*/
-        printf("%c", choice1); 
-        fflush(stdin); 
+            choice1 = getch();
+        printf("%c", choice1);
+        fflush(stdin);
 
         if (choice1 == '1') /*会员登录*/
         {
