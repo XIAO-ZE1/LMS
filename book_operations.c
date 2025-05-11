@@ -489,7 +489,6 @@ void modify_book() /*修改图书信息*/
         }
     }
 }
-
 void borrow_book(char account[20])
 {
     FILE *p1, *p3;
@@ -503,7 +502,7 @@ void borrow_book(char account[20])
     {
         printf("输入要借阅的书本名:");
         gets(search);
-        p1 = fopen(LIBFILE, "r");
+        p1 = fopen("library.txt", "r");
         booknumber1 = 0;
         while (!feof(p1))
         {
@@ -517,7 +516,7 @@ void borrow_book(char account[20])
 
         if (bookinfo[0].quantity == 0)
         {
-            printf("\n书库中没有没有任何书目!\n");
+            printf("\n书库中没有任何信息!\n");
             printf("按任意键回到主菜单!\n\n");
             getch();
             break;
@@ -530,8 +529,8 @@ void borrow_book(char account[20])
                     bookinfo[n].quantity--;
                     bookinfo[n].time++;
 
-                    p3 = fopen(MBFILE, "a"); /*借书以a追加的方式，在文件中增加一本书*/
-                    fprintf(p3, "%s %s %s %s %s %f %s\n",
+                    p3 = fopen("memberbook.txt", "a"); /*借书以a追加的方式，在文件中增加一本书*/
+                    fprintf(p1, "%s %s %s %s %s %f %s\n",
                             bookinfo[n].number, bookinfo[n].name, bookinfo[n].author, bookinfo[n].press,
                             bookinfo[n].category, bookinfo[n].price, account);
                     fclose(p3);
@@ -542,7 +541,7 @@ void borrow_book(char account[20])
             printf("\n没有查找该书的任何信息!\n");
         else
         {
-            p1 = fopen(LIBFILE, "w");
+            p1 = fopen("library.txt", "w");
             for (n = 0; n < booknumber1; n++)
                 fprintf(p1, "%s %s %s %s %s %f %d %d\n",
                         bookinfo[n].number, bookinfo[n].name, bookinfo[n].author, bookinfo[n].press,
@@ -577,9 +576,29 @@ void return_book(char account[20])
     {
         flag2 = 0;
         fflush(stdin);
-        booknumber = read_books_from_file(LIBFILE, bookinfo, 100);
-        booknumber2 = read_books_from_file(MBFILE, bookgrasp, 100);
-        p3 = fopen(MBFILE, "r");
+        p1 = fopen("library.txt", "r");
+        booknumber = 0;
+        while (!feof(p1))
+        {
+            fscanf(p1, "%s %s %s %s %s %f %d %d\n",
+                   bookinfo[booknumber].number, bookinfo[booknumber].name, bookinfo[booknumber].author,
+                   bookinfo[booknumber].press, bookinfo[booknumber].category,
+                   &bookinfo[booknumber].price, &bookinfo[booknumber].quantity, &bookinfo[booknumber].time);
+            booknumber++;
+        }
+        fclose(p1);
+
+        p3 = fopen("memberbook.txt", "r");
+        booknumber2 = 0;
+        while (!feof(p3))
+        {
+            fscanf(p3, "%s %s %s %s %s %f %s\n",
+                   bookgrasp[booknumber2].number, bookgrasp[booknumber2].name, bookgrasp[booknumber2].author, bookgrasp[booknumber2].press,
+                   bookgrasp[booknumber2].category, &bookgrasp[booknumber2].price, bookgrasp[booknumber2].account);
+            booknumber2++;
+        }
+        fclose(p3);
+
         printf("您所借阅的所有图书信息如下:\n");
         printf("|----------------------------图书借阅信息--------------------|\n");
         printf("|编号  书名        作者      出版社          类别    单价    |\n");
@@ -598,7 +617,7 @@ void return_book(char account[20])
         gets(search);
         if (bookinfo[0].quantity == 0)
         {
-            printf("\n书库中没有任何书目!\n");
+            printf("\n书库中没有任何信息!\n");
             printf("按任意键回到主菜单!\n\n");
             getch();
             break;
@@ -624,7 +643,7 @@ void return_book(char account[20])
                                 break;
                             }
 
-                        p3 = fopen(MBFILE, "w");
+                        p3 = fopen("memberbook.txt", "w");
                         for (j = 0; j < booknumber2; j++)
                         {
                             fprintf(p3, "%s %s %s %s %s %f %s\n",
@@ -637,10 +656,10 @@ void return_book(char account[20])
                 }
         }
         if (n == booknumber || flag2 == 0)
-            printf("并未查找到您的这条借阅信息!\n");
+            printf("您并没有这条借阅信息!\n");
         if (n < booknumber && flag2 == 1)
         {
-            p1 = fopen(LIBFILE, "w");
+            p1 = fopen("library.txt", "w");
             for (n = 0; n < booknumber; n++)
                 fprintf(p1, "%s %s %s %s %s %f %d %d\n",
                         bookinfo[n].number, bookinfo[n].name, bookinfo[n].author,
